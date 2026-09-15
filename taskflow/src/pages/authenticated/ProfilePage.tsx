@@ -1,9 +1,9 @@
 import { useState, type FormEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuthStore } from '../stores/authStore';
-import { passwordSchema } from '../schemas';
-import type { PasswordInput } from '../schemas';
+import { useAuthStore } from '../../stores/authStore';
+import { passwordSchema } from '../../schemas';
+import type { PasswordInput } from '../../schemas';
 
 const inputClass = 'w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 outline-none focus:border-violet-400 transition-colors text-sm placeholder-gray-500';
 const errorClass = 'text-red-400 text-xs mt-1';

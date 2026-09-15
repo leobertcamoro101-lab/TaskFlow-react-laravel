@@ -1,13 +1,13 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../stores/authStore';
-import { registerSchema } from '../schemas';
-import type { RegisterInput } from '../schemas';
+import { useAuthStore } from '../../stores/authStore';
+import { registerSchema } from '../../schemas';
+import type { RegisterInput } from '../../schemas';
 
-import Card from '../components/Card';
-import FormField from '../components/FormField';
-import { inputClass } from '../components/FormField/inputClass';
+import Card from '../../components/Card';
+import FormField from '../../components/FormField';
+import { inputClass } from '../../components/FormField/inputClass';
 
 const fieldMap: Record<string, string> = {
   first_name: 'firstName',

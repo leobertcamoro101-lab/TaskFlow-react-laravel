@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getTasks } from '../api/client';
-import { useAuthStore } from '../stores/authStore';
-import type { TaskStatus } from '../types';
-import TaskCard from '../components/TaskCard';
-import TaskForm from '../components/TaskForm';
+import { getTasks } from '../../api/client';
+import { useAuthStore } from '../../stores/authStore';
+import type { TaskStatus } from '../../types';
+import TaskCard from '../../components/TaskCard';
+import TaskForm from '../../components/TaskForm';
 
 const FILTERS: (TaskStatus | 'all')[] = ['all', 'todo', 'in-progress', 'done'];
 
