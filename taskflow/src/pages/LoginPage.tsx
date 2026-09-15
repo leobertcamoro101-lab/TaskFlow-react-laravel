@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { loginSchema } from '../schemas';
 import type { LoginInput } from '../schemas';
+
+import Card from '../components/Card';
 import FormField from '../components/FormField';
 import { inputClass } from '../components/FormField/inputClass';
 
@@ -18,6 +20,7 @@ const LoginPage = () => {
     formState: { errors, isSubmitting },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
+    mode: "onTouched",
     defaultValues: { email: '', password: '' },
   });
 
@@ -38,34 +41,50 @@ const LoginPage = () => {
           <p className="text-gray-400">Sign in to manage your tasks</p>
         </div>
 
-        <div className="bg-gray-800/50 border border-gray-700 rounded-2xl p-6 sm:p-8">
+        <Card>
           <h2 className="text-white font-bold text-xl mb-6">Sign In</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <FormField label="Email" error={errors.email}>
-              <input type="email" placeholder="your@email.com" {...register('email')} className={inputClass(!!errors.email)} />
+              <input
+                type="email"
+                placeholder="your@email.com"
+                {...register("email")}
+                className={inputClass(!!errors.email)}
+              />
             </FormField>
             <FormField label="Password" error={errors.password}>
-              <input type="password" placeholder="••••••••" {...register('password')} className={inputClass(!!errors.password)} />
+              <input
+                type="password"
+                placeholder="••••••••"
+                {...register("password")}
+                className={inputClass(!!errors.password)}
+              />
             </FormField>
             {errors.root && (
               <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-4 py-3 text-sm">
                 ⚠️ {errors.root.message}
               </div>
             )}
-            <button type="submit" disabled={isSubmitting}
+            <button
+              type="submit"
+              disabled={isSubmitting}
               className="w-full bg-violet-500 hover:bg-violet-400 disabled:opacity-50
-                         text-white font-bold py-3 rounded-xl transition-colors">
-              {isSubmitting ? 'Signing in...' : 'Sign In'}
+                         text-white font-bold py-3 rounded-xl transition-colors"
+            >
+              {isSubmitting ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
           <p className="text-center text-gray-500 text-sm mt-6">
-            No account?{' '}
-            <Link to="/register" className="text-violet-400 hover:text-violet-300 font-medium">
+            No account?{" "}
+            <Link
+              to="/register"
+              className="text-violet-400 hover:text-violet-300 font-medium"
+            >
               Register
             </Link>
           </p>
-        </div>
+        </Card>
       </div>
     </div>
   );

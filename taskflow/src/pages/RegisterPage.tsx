@@ -29,6 +29,7 @@ const RegisterPage = () => {
     formState: { errors, isSubmitting },
   } = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
+    mode: "onTouched",
     defaultValues: { firstName: '', lastName: '', birthday: '', gender: undefined, email: '', password: '' },
   });
 
