@@ -1,35 +1,41 @@
+import type { ChangeEvent } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateTask, deleteTask } from '../api/client';
+import type { Task, TaskStatus, TaskPriority } from '../types';
 
-const STATUS_COLORS = {
+const STATUS_COLORS: Record<TaskStatus, string> = {
   'todo': 'bg-gray-500/10 text-gray-400 border-gray-500/20',
   'in-progress': 'bg-violet-500/10 text-violet-400 border-violet-500/20',
   'done': 'bg-green-500/10 text-green-400 border-green-500/20',
 };
 
-const PRIORITY_COLORS = {
+const PRIORITY_COLORS: Record<TaskPriority, string> = {
   low: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
   medium: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
   high: 'bg-red-500/10 text-red-400 border-red-500/20',
 };
 
-const STATUS_ICONS = { 'todo': '📋', 'in-progress': '⚡', 'done': '✅' };
+const STATUS_ICONS: Record<TaskStatus, string> = { 'todo': '📋', 'in-progress': '⚡', 'done': '✅' };
 
-const TaskCard = ({ task }) => {
+interface TaskCardProps {
+  task: Task;
+}
+
+const TaskCard = ({ task }: TaskCardProps) => {
   const queryClient = useQueryClient();
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => updateTask(id, data),
+    mutationFn: ({ id, data }: { id: number; data: Partial<Task> }) => updateTask(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tasks'] }),
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => deleteTask(id),
+    mutationFn: (id: number) => deleteTask(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tasks'] }),
   });
 
-  const handleStatusChange = (e) => {
-    updateMutation.mutate({ id: task.id, data: { status: e.target.value } });
+  const handleStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    updateMutation.mutate({ id: task.id, data: { status: e.target.value as TaskStatus } });
   };
 
   return (

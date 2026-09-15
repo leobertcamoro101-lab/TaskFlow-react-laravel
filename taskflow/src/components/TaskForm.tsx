@@ -1,11 +1,24 @@
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createTask } from '../api/client';
+import type { TaskPriority, TaskStatus } from '../types';
 
-const defaultForm = { title: '', description: '', priority: 'medium', status: 'todo', due_date: '' };
+interface TaskFormState {
+  title: string;
+  description: string;
+  priority: TaskPriority;
+  status: TaskStatus;
+  due_date: string;
+}
 
-const TaskForm = ({ onClose }) => {
-  const [form, setForm] = useState(defaultForm);
+const defaultForm: TaskFormState = { title: '', description: '', priority: 'medium', status: 'todo', due_date: '' };
+
+interface TaskFormProps {
+  onClose: () => void;
+}
+
+const TaskForm = ({ onClose }: TaskFormProps) => {
+  const [form, setForm] = useState<TaskFormState>(defaultForm);
   const [error, setError] = useState('');
   const queryClient = useQueryClient();
 
@@ -15,12 +28,12 @@ const TaskForm = ({ onClose }) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       onClose();
     },
-    onError: (err) => {
+    onError: (err: any) => {
       setError(err.response?.data?.message || 'Failed to create task');
     },
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!form.title.trim()) return setError('Title is required');
     setError('');
@@ -45,10 +58,10 @@ const TaskForm = ({ onClose }) => {
             value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
             className={`${inputClass} resize-none`} />
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="text-xs text-gray-400 mb-1 block">Priority</label>
-            <select value={form.priority} onChange={(e) => setForm({ ...form, priority: e.target.value })}
+            <select value={form.priority} onChange={(e) => setForm({ ...form, priority: e.target.value as TaskPriority })}
               className={inputClass}>
               <option value="low">🟢 Low</option>
               <option value="medium">🟡 Medium</option>

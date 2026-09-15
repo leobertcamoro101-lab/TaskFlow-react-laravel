@@ -2,15 +2,16 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getTasks } from '../api/client';
 import { useAuthStore } from '../stores/authStore';
+import type { TaskStatus } from '../types';
 import TaskCard from '../components/TaskCard';
 import TaskForm from '../components/TaskForm';
 
-const FILTERS = ['all', 'todo', 'in-progress', 'done'];
+const FILTERS: (TaskStatus | 'all')[] = ['all', 'todo', 'in-progress', 'done'];
 
 const DashboardPage = () => {
   const user = useAuthStore((s) => s.user);
   const [showForm, setShowForm] = useState(false);
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState<TaskStatus | 'all'>('all');
 
   const { data: tasks = [], isLoading, error } = useQuery({
     queryKey: ['tasks', filter],

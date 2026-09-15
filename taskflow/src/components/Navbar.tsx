@@ -17,9 +17,10 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           {isAuthenticated ? (
             <>
-              <span className="text-gray-400 text-sm hidden sm:block">
+              <Link to="/profile"
+                className="text-gray-400 text-sm hidden sm:block hover:text-violet-400 transition-colors">
                 👋 {user?.name}
-              </span>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30
