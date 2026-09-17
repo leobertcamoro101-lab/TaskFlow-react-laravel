@@ -5,6 +5,8 @@ export interface User {
   name: string;
   birthday: string | null;
   gender: string | null;
+  avatar: string | null;
+  avatar_url: string | null;
   email: string;
   email_verified_at: string | null;
   created_at: string;
@@ -41,8 +43,12 @@ export interface LoginPayload {
 }
 
 export interface ProfilePayload {
-  name: string;
+  first_name: string;
+  last_name: string;
+  birthday: string;
+  gender: string;
   email: string;
+  avatar?: File | null;
 }
 
 export interface PasswordPayload {

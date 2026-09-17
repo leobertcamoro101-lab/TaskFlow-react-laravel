@@ -41,6 +41,28 @@ export const registerSchema = z
     }
   });
 
+export const profileSchema = z
+  .object({
+    firstName: z.string().min(1, 'First name is required').max(255).transform((v) => v.trim()),
+    lastName: z.string().min(1, 'Last name is required').max(255).transform((v) => v.trim()),
+    birthday: z.string().min(1, 'Birthday is required'),
+    gender: z.enum(['male', 'female', 'other', 'prefer_not_to_say'], {
+      errorMap: () => ({ message: 'Please select a gender' }),
+    }),
+    email: z.string().min(1, 'Email is required').email('Invalid email address').transform((v) => v.toLowerCase()),
+  })
+  .superRefine((data, ctx) => {
+    if (!ageSchema.safeParse(calculateAge(data.birthday)).success) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'You must be at least 13 years old',
+        path: ['birthday'],
+      });
+    }
+  });
+
+export type ProfileInput = z.infer<typeof profileSchema>;
+
 export const passwordSchema = z
   .object({
     current_password: z.string().min(1, 'Current password is required'),

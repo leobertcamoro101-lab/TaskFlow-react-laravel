@@ -42,7 +42,22 @@ export const register = (data: RegisterPayload): Promise<AxiosResponse<AuthRespo
 export const login = (data: LoginPayload): Promise<AxiosResponse<AuthResponse>> => api.post('/login', data);
 export const logout = (): Promise<AxiosResponse<MessageResponse>> => api.post('/logout');
 export const getMe = (): Promise<AxiosResponse<User>> => api.get('/me');
-export const updateProfile = (data: ProfilePayload): Promise<AxiosResponse<User>> => api.put('/profile', data);
+export const updateProfile = (data: ProfilePayload): Promise<AxiosResponse<User>> => {
+  if (data.avatar) {
+    const formData = new FormData();
+    formData.append('first_name', data.first_name);
+    formData.append('last_name', data.last_name);
+    formData.append('birthday', data.birthday);
+    formData.append('gender', data.gender);
+    formData.append('email', data.email);
+    formData.append('avatar', data.avatar);
+    formData.append('_method', 'PUT');
+    return api.post('/profile', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  }
+  return api.put('/profile', data);
+};
 export const updatePassword = (data: PasswordPayload): Promise<AxiosResponse<MessageResponse>> => api.put('/profile/password', data);
 
 // Tasks
