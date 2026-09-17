@@ -24,10 +24,11 @@ function AccountMenu() {
 
   const linkClasses =
     'w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 no-underline';
-	const initials =
-    `${user?.first_name?.[0] ?? ""}${user?.last_name?.[0] ?? ""}`.toUpperCase() ||
-    user?.name?.[0]?.toUpperCase() ||
-    "?";
+  // commented because the Avatar component has fall-back initials
+	// const initials =
+  //   `${user?.first_name?.[0] ?? ""}${user?.last_name?.[0] ?? ""}`.toUpperCase() ||
+  //   user?.name?.[0]?.toUpperCase() ||
+  //   "?";
 	return (
 		<div className="relative " ref={menuRef}>
       <button
@@ -35,10 +36,11 @@ function AccountMenu() {
         className="flex items-center gap-1 px-2 py-1.5 rounded-full hover:bg-gray-100 transition-colors"
         aria-label="Account menu"
       >
-        {/* <div className="w-8 h-8">
-          <Avatar image={user?.avatar_url ?? undefined} alt="Profile" width="32px" />
-        </div> */}
-				{user?.avatar_url ? (
+        <div className="w-8 h-8">
+          <Avatar image={user?.avatar_url} name={user?.name} alt="Profile" width="32px" />
+        </div>
+        {/* commented because the Avatar component has fall-back initials*/}
+				{/* {user?.avatar_url ? (
 					<div className="w-8 h-8">
 						<Avatar image={user.avatar_url} alt="Profile" width="32px" />
 					</div>
@@ -46,7 +48,7 @@ function AccountMenu() {
 					<div className="w-8 h-8 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center">
 						<span className="text-xs font-bold text-violet-300">{initials}</span>
 					</div>
-				)}
+				)} */}
         <ChevronDown size={16} className="text-gray-500" />
       </button>
 

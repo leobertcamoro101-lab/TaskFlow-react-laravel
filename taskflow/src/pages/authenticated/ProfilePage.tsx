@@ -101,11 +101,11 @@ const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       }
     }
   };
-
-  const initials =
-    `${user?.first_name?.[0] ?? ''}${user?.last_name?.[0] ?? ''}`.toUpperCase() ||
-    user?.name?.[0]?.toUpperCase() ||
-    '?';
+  // commented because the Avatar component has fall-back initials
+  // const initials =
+  //   `${user?.first_name?.[0] ?? ''}${user?.last_name?.[0] ?? ''}`.toUpperCase() ||
+  //   user?.name?.[0]?.toUpperCase() ||
+  //   '?';
 
   return (
     <div className="min-h-screen flex items-start justify-center px-4 py-12">
@@ -120,7 +120,8 @@ const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         <Card>
           {mode === 'view' && (
             <div className="text-center">
-              {user?.avatar_url ? (
+              {/* commented because the Avatar component has fall-back initials*/}
+              {/* {user?.avatar_url ? (
                 <div className="mb-4 flex justify-center">
                   <Avatar image={user.avatar_url} alt={user.name} />
                 </div>
@@ -129,7 +130,8 @@ const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                                 flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-violet-300">{initials}</span>
                 </div>
-              )}
+              )} */}
+              <Avatar image={avatarPreview || user?.avatar_url} name={user?.name} alt={user?.name} />
               <h1 className="text-2xl font-bold text-white mb-6">{user?.name}</h1>
 
               <div className="text-left space-y-2 mb-6">
@@ -166,13 +168,15 @@ const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               <h2 className="text-white font-bold text-xl mb-6">Edit Profile</h2>
               <form onSubmit={handleProfileFormSubmit(onProfileSubmit)} className="space-y-4">
                 <div className="flex flex-col items-center gap-3 mb-2">
-                  {(avatarPreview || user?.avatar_url) ? (
+                  {/* commented because the Avatar component has fall-back initials*/}
+                  {/* {(avatarPreview || user?.avatar_url) ? (
                     <Avatar image={avatarPreview || user?.avatar_url || undefined} alt={user?.name} />
                   ) : (
                     <div className="w-24 h-24 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center">
                       <span className="text-2xl font-bold text-violet-300">{initials}</span>
                     </div>
-                  )}
+                  )} */}
+                  <Avatar image={avatarPreview || user?.avatar_url} name={user?.name} alt={user?.name} />
                   <label className="cursor-pointer text-violet-400 hover:text-violet-300 text-sm font-medium">
                     Upload Photo
                     <input type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />

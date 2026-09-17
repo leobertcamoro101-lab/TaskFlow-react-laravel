@@ -1,7 +1,8 @@
-import type { ChangeEvent } from 'react';
+import  { useState, type ChangeEvent } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateTask, deleteTask } from '../api/client';
 import type { Task, TaskStatus, TaskPriority } from '../types';
+import TaskForm from './TaskForm';
 
 const STATUS_COLORS: Record<TaskStatus, string> = {
   'todo': 'bg-gray-500/10 text-gray-400 border-gray-500/20',
@@ -23,6 +24,7 @@ interface TaskCardProps {
 
 const TaskCard = ({ task }: TaskCardProps) => {
   const queryClient = useQueryClient();
+  const [isEditing, setIsEditing] = useState(false);
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: Partial<Task> }) => updateTask(id, data),
@@ -38,6 +40,10 @@ const TaskCard = ({ task }: TaskCardProps) => {
     updateMutation.mutate({ id: task.id, data: { status: e.target.value as TaskStatus } });
   };
 
+  if (isEditing) {
+  return <TaskForm task={task} onClose={() => setIsEditing(false)} />;
+}
+
   return (
     <div className={`bg-gray-800/50 border border-gray-700 rounded-2xl p-4 sm:p-5
                      hover:border-gray-600 transition-all ${task.status === 'done' ? 'opacity-60' : ''}`}>
@@ -50,6 +56,14 @@ const TaskCard = ({ task }: TaskCardProps) => {
             {task.title}
           </h3>
         </div>
+        <div className="flex items-center gap-1 shrink-0">
+        <button
+          onClick={() => setIsEditing(true)}
+          className="text-gray-600 hover:text-violet-400 transition-colors text-sm"
+          aria-label="Edit task"
+        >
+          ✏️
+        </button>
         <button
           onClick={() => deleteMutation.mutate(task.id)}
           disabled={deleteMutation.isPending}
@@ -57,6 +71,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
         >
           ×
         </button>
+        </div>
       </div>
 
       {task.description && (
