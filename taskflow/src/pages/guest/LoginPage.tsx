@@ -74,7 +74,14 @@ const LoginPage = () => {
               {isSubmitting ? "Signing in..." : "Sign In"}
             </button>
           </form>
-
+            <div className="text-center my-4">
+              <Link
+                to="/forgot-password"
+                className="text-blue-600 text-sm hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
           <p className="text-center text-gray-500 text-sm mt-6">
             No account?{" "}
             <Link

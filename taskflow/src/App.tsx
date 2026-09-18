@@ -6,6 +6,10 @@ import LoginPage from './pages/guest/LoginPage';
 import RegisterPage from './pages/guest/RegisterPage';
 import DashboardPage from './pages/authenticated/DashboardPage';
 import ProfilePage from './pages/authenticated/ProfilePage';
+import EditProfilePage from './pages/authenticated/EditProfilePage';
+import ChangePasswordPage from './pages/authenticated/ChangePasswordPage';
+import ForgotPasswordPage from './pages/guest/ForgotPasswordPage';
+import ResetPasswordPage from './pages/guest/ResetPasswordPage';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },
@@ -30,6 +34,18 @@ function App() {
                 <ProfilePage />
               </ProtectedRoute>
             } />
+            <Route path="/profile/edit" element={
+              <ProtectedRoute>
+                <EditProfilePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile/password" element={
+              <ProtectedRoute>
+                <ChangePasswordPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

@@ -1,6 +1,7 @@
-import  { useState, type ChangeEvent } from 'react';
+import  { useState, useEffect, useRef, type ChangeEvent } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateTask, deleteTask } from '../api/client';
+import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import type { Task, TaskStatus, TaskPriority } from '../types';
 import TaskForm from './TaskForm';
 
@@ -25,6 +26,18 @@ interface TaskCardProps {
 const TaskCard = ({ task }: TaskCardProps) => {
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: Partial<Task> }) => updateTask(id, data),
@@ -56,7 +69,34 @@ const TaskCard = ({ task }: TaskCardProps) => {
             {task.title}
           </h3>
         </div>
-        <div className="flex items-center gap-1 shrink-0">
+        <div className='relative' ref={menuRef}>
+          <button
+            onClick={() => setMenuOpen((open) => !open)}
+            className="p-2 rounded-full hover:bg-gray-100 text-gray-600"
+            // aria-label="Task options"
+          >
+            <MoreHorizontal size={20} />
+          </button>
+          {menuOpen && (
+            <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10">
+              <button
+                onClick={() => {setMenuOpen(false); setIsEditing(true)}}
+                className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 bg-transparent border-0 rounded-none m-0 justify-start"
+                aria-label="Edit task"
+              >
+                <Pencil size={16} /> Edit
+              </button>
+              <button
+                onClick={() => { setMenuOpen(false); deleteMutation.mutate(task.id)}}
+                disabled={deleteMutation.isPending}
+                className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+              >
+                <Trash2 size={16} /> Delete
+              </button>
+            </div>
+          )}
+        </div>
+        {/* <div className="flex items-center gap-1 shrink-0">
         <button
           onClick={() => setIsEditing(true)}
           className="text-gray-600 hover:text-violet-400 transition-colors text-sm"
@@ -71,7 +111,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
         >
           ×
         </button>
-        </div>
+        </div> */}
       </div>
 
       {task.description && (

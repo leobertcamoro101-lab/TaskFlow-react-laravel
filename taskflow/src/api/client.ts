@@ -1,7 +1,8 @@
 import axios, { type AxiosResponse } from 'axios';
 import type {
   User, Task, TaskStatus, TaskPriority,
-  RegisterPayload, LoginPayload, ProfilePayload, PasswordPayload,
+  RegisterPayload, LoginPayload, ProfilePayload, PasswordPayload, ForgotPasswordPayload,
+  ResetPasswordPayload
 } from '../types';
 
 const api = axios.create({
@@ -65,5 +66,9 @@ export const getTasks = (params?: TaskFilters): Promise<AxiosResponse<Task[]>> =
 export const createTask = (data: TaskInput): Promise<AxiosResponse<Task>> => api.post('/tasks', data);
 export const updateTask = (id: number, data: Partial<TaskInput>): Promise<AxiosResponse<Task>> => api.put(`/tasks/${id}`, data);
 export const deleteTask = (id: number): Promise<AxiosResponse<MessageResponse>> => api.delete(`/tasks/${id}`);
+export const forgotPassword = (data: ForgotPasswordPayload): Promise<AxiosResponse<MessageResponse>> =>
+  api.post('/forgot-password', data);
+export const resetPassword = (data: ResetPasswordPayload): Promise<AxiosResponse<MessageResponse>> =>
+  api.post('/reset-password', data);
 
 export default api;
