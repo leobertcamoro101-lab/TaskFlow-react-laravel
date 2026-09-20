@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createTask, updateTask } from '../api/client';
 import type { TaskInput } from '../api/client';
 import type { Task, TaskPriority, TaskStatus } from '../types';
+import LoadingSpinner from './LoadingSpinner';
 import { inputClass } from './FormField/inputClass';
 
 interface TaskFormState {
@@ -69,7 +70,9 @@ const TaskForm = ({ task, onClose }: TaskFormProps) => {
   };
 
   return (
-    <div className="bg-gray-800 border border-gray-700 rounded-2xl p-5 mb-6">
+    <div className=" relative bg-gray-800 border border-gray-700 rounded-2xl p-5 mb-6">
+      {/* + add relative above, + add spinner below */}
+      {mutation.isPending && <LoadingSpinner asOverlay />}
       <h2 className="text-white font-bold mb-4">{isEditMode ? '✏️ Edit Task' : '➕ New Task'}</h2>
       <form onSubmit={handleSubmit} className="space-y-3">
         <div>

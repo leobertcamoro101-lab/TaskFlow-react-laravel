@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStore';
 import Card from '../../components/Card';
 import Avatar from '../../components/Avatar';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const formatBirthday = (birthday: string | null | undefined) => {
   if (!birthday) return '—';
@@ -22,8 +23,13 @@ const ProfilePage = () => {
         >
           <span aria-hidden="true">←</span> Back
         </button>
-
-        <Card>
+        {!user && (
+          <div className="flex justify-center py-16">
+            <LoadingSpinner />
+          </div>
+        )}
+        {user && (
+          <Card>
           <div className="text-center">
             <div className="mb-4 flex justify-center">
               <Avatar image={user?.avatar_url} name={user?.name} alt={user?.name} />
@@ -58,6 +64,7 @@ const ProfilePage = () => {
             </div>
           </div>
         </Card>
+        )}
       </div>
     </div>
   );

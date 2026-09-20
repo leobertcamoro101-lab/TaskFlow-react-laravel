@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { LoadingProvider } from './context/LoadingProvider';
 import Navbar from './components/navigation/Navbar';
 import ProtectedRoute from './components/navigation/ProtectedRoute';
 import LoginPage from './pages/guest/LoginPage';
@@ -17,7 +18,9 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
+    
     <QueryClientProvider client={queryClient}>
+      <LoadingProvider>
       <BrowserRouter>
         <div className="min-h-screen bg-gray-950">
           <Routes>
@@ -50,7 +53,9 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
+      </LoadingProvider>
     </QueryClientProvider>
+    
   );
 }
 

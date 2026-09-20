@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .env
+hooks/useLoading.ts
 
 # Editor directories and files
 .vscode/*

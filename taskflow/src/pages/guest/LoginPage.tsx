@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStore';
+// import { useLoading } from '../../hooks/useLoading';   // + add this loading in every action no bridge
 import { loginSchema } from '../../schemas';
 import type { LoginInput } from '../../schemas';
 
@@ -12,6 +13,7 @@ import { inputClass } from '../../components/FormField/inputClass';
 const LoginPage = () => {
   const { login } = useAuthStore();
   const navigate = useNavigate();
+  // const { startLoading, stopLoading } = useLoading();   // + add this loading in every action no bridge
 
   const {
     register,
@@ -25,12 +27,16 @@ const LoginPage = () => {
   });
 
   const onSubmit = async (data: LoginInput) => {
+    // startLoading();                                      // + add this loading in every action no bridge
     try {
       await login(data);
       navigate('/');
     } catch (err: any) {
       setError('root', { message: err.response?.data?.message || 'Login failed. Check your credentials.' });
-    }
+    } 
+    // finally {
+    //   stopLoading();                                     // + add this loading in every action no bridge
+    // }
   };
 
   return (

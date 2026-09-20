@@ -4,6 +4,7 @@ import type {
   RegisterPayload, LoginPayload, ProfilePayload, PasswordPayload, ForgotPasswordPayload,
   ResetPasswordPayload
 } from '../types';
+import { notifyLoadingStart, notifyLoadingStop } from '../context/loading-bridge'; // loading-bridge
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
@@ -16,6 +17,24 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+api.interceptors.request.use((config) => {
+  notifyLoadingStart();
+  return config;
+});
+
+api.interceptors.response.use(
+  (response) => {
+    notifyLoadingStop();
+    return response;
+  },
+  (error) => {
+    notifyLoadingStop();
+    return Promise.reject(error);
+  },
+);
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 interface AuthResponse {
   user: User;
   token: string;

@@ -5,6 +5,7 @@ import { useAuthStore } from '../../stores/authStore';
 import type { TaskStatus } from '../../types';
 import TaskCard from '../../components/TaskCard';
 import TaskForm from '../../components/TaskForm';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const FILTERS: (TaskStatus | 'all')[] = ['all', 'todo', 'in-progress', 'done'];
 
@@ -25,6 +26,14 @@ const DashboardPage = () => {
     inProgress: tasks.filter((t) => t.status === 'in-progress').length,
     done: tasks.filter((t) => t.status === 'done').length,
   };
+
+  if (isLoading)
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-950">
+        {" "}
+        <LoadingSpinner />{" "}
+      </div>
+    );
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">

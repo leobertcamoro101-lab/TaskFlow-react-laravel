@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStore';
+// import { useLoading } from '../../hooks/useLoading';   // + add this loading in every action no bridge 
 import { registerSchema } from '../../schemas';
 import type { RegisterInput } from '../../schemas';
 
@@ -21,6 +22,7 @@ const fieldMap: Record<string, string> = {
 const RegisterPage = () => {
   const { register: registerUser } = useAuthStore();
   const navigate = useNavigate();
+  // const { startLoading, stopLoading } = useLoading();   // + add this loading in every action no bridge 
 
   const {
     register,
@@ -34,6 +36,7 @@ const RegisterPage = () => {
   });
 
   const onSubmit = async (data: RegisterInput) => {
+    // startLoading();                                     // + add this loading in every action no bridge
     try {
       await registerUser({
         first_name: data.firstName,
@@ -54,7 +57,10 @@ const RegisterPage = () => {
       } else {
         setError('root', { message: err.response?.data?.message || 'Registration failed' });
       }
-    }
+    } 
+    // finally {
+    //   stopLoading();                                     // + add this loading in every action no bridge
+    // }
   };
 
   return (

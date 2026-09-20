@@ -10,6 +10,7 @@ import FormField from '../../components/FormField';
 import { inputClass } from '../../components/FormField/inputClass';
 import Card from '../../components/Card';
 import Avatar from '../../components/Avatar';
+import LoadingSpinner from '../../components/LoadingSpinner';  // + add
 
 const extractError = (err: any, fallback: string): string => {
   const errors = err.response?.data?.errors;
@@ -71,8 +72,14 @@ const EditProfilePage = () => {
         >
           <span aria-hidden="true">←</span> Back
         </Link>
-
-        <Card>
+        {!user && (
+          <div className="flex justify-center py-16">
+            <LoadingSpinner />
+          </div>
+        )}
+        {user && (
+           <Card>
+          {isSubmitting && <LoadingSpinner asOverlay />}
           <h2 className="text-white font-bold text-xl mb-6">Edit Profile</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="flex flex-col items-center gap-3 mb-2">
@@ -128,6 +135,7 @@ const EditProfilePage = () => {
             </div>
           </form>
         </Card>
+        )}
       </div>
     </div>
   );
