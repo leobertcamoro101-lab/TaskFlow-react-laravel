@@ -3,14 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LoadingProvider } from './context/LoadingProvider';
 import Navbar from './components/navigation/Navbar';
 import ProtectedRoute from './components/navigation/ProtectedRoute';
-import LoginPage from './pages/guest/LoginPage';
-import RegisterPage from './pages/guest/RegisterPage';
-import DashboardPage from './pages/authenticated/DashboardPage';
-import ProfilePage from './pages/authenticated/ProfilePage';
-import EditProfilePage from './pages/authenticated/EditProfilePage';
-import ChangePasswordPage from './pages/authenticated/ChangePasswordPage';
-import ForgotPasswordPage from './pages/guest/ForgotPasswordPage';
-import ResetPasswordPage from './pages/guest/ResetPasswordPage';
+import { LoginPage, RegisterPage, DashboardPage, ProfilePage, EditProfilePage, ChangePasswordPage, ForgotPasswordPage, ResetPasswordPage } from './router/routes-config';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },
