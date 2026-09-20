@@ -1,14 +1,7 @@
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 import ProtectedRoute  from "../components/navigation/ProtectedRoute";
 import Navbar  from "../components/navigation/Navbar";
-import LoginPage from "../pages/guest/LoginPage";
-import RegisterPage from "../pages/guest/RegisterPage";
-import DashboardPage  from "../pages/authenticated/DashboardPage";
-import ProfilePage from "../pages/authenticated/ProfilePage";
-import EditProfilePage from "../pages/authenticated/EditProfilePage";
-import ChangePasswordPage  from "../pages/authenticated/ChangePasswordPage";
-import ForgotPasswordPage  from "../pages/guest/ForgotPasswordPage";
-import ResetPasswordPage  from "../pages/guest/ResetPasswordPage";
+import { LoginPage, RegisterPage, DashboardPage, ProfilePage, EditProfilePage, ChangePasswordPage, ForgotPasswordPage, ResetPasswordPage } from "./routes-config";
 
 const routes: RouteObject[] = [
 
