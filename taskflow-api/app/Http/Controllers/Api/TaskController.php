@@ -27,7 +27,7 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'status' => 'in:todo,in-progress,done',
@@ -35,7 +35,7 @@ class TaskController extends Controller
             'due_date' => 'nullable|date',
         ]);
 
-        $task = $request->user()->tasks()->create($request->all());
+        $task = $request->user()->tasks()->create($validated);
 
         return response()->json($task, 201);
     }
@@ -55,7 +55,7 @@ class TaskController extends Controller
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'status' => 'sometimes|in:todo,in-progress,done',
@@ -63,7 +63,7 @@ class TaskController extends Controller
             'due_date' => 'nullable|date',
         ]);
 
-        $task->update($request->all());
+        $task->update($validated);
 
         return response()->json($task);
     }
