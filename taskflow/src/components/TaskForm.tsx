@@ -83,7 +83,7 @@ const TaskForm = ({ task, onClose }: TaskFormProps) => {
         </div>
         <div>
           <label className="text-xs text-gray-400 mb-1 block">Description</label>
-          <textarea name="description" placeholder="Optional description..." rows={2}
+          <textarea name="description" placeholder="Optional description..." rows={2} maxLength={5000}
             value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
             className={`${inputClass()} resize-none`} />
         </div>
