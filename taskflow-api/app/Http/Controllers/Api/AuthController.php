@@ -135,20 +135,6 @@ class AuthController extends Controller
         return response()->json(['message' => 'Password updated successfully']);
     }
 
-    // public function forgotPassword(Request $request)
-    // {
-    //     $request->validate(['email' => 'required|email']);
-
-    //     $status = Password::sendResetLink($request->only('email'));
-
-    //     if ($status === Password::RESET_LINK_SENT) {
-    //         return response()->json(['message' => __($status)]);
-    //     }
-
-    //     throw ValidationException::withMessages([
-    //         'email' => [__($status)],
-    //     ]);
-    // }
 		
 		public function forgotPassword(Request $request)
 		{
