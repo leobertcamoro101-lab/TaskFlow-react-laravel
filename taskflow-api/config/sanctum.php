@@ -50,7 +50,7 @@ return [
     |
     */
 
-    'expiration' => null,
+    'expiration' => 60 * 24 * 14, // 14 days — a leaked/stale token stops working on its own instead of lasting forever
 
     /*
     |--------------------------------------------------------------------------

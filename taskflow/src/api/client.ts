@@ -31,6 +31,16 @@ api.interceptors.response.use(
   },
   (error) => {
     notifyLoadingStop();
+
+    // Token missing/expired/revoked — clear stale auth state and send the user back to login
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('auth-storage');
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
+    }
+
     return Promise.reject(error);
   },
 );

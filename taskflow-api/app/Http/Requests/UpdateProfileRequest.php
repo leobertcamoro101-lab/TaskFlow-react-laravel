@@ -19,7 +19,7 @@ class UpdateProfileRequest extends FormRequest
             'birthday' => 'required|date|before:-13 years',
             'gender' => 'required|in:male,female,other,prefer_not_to_say',
             'email' => 'required|string|email|max:255|unique:users,email,' . $this->user()->id,
-            'avatar' => 'nullable|image|max:2048', // 2MB, must be an actual image file
+            'avatar' => 'nullable|mimes:jpeg,jpg,png,gif,webp|max:2048', // 2MB; raster formats only — excludes svg (can embed scripts)
         ];
     }
 
