@@ -135,42 +135,53 @@ class AuthController extends Controller
         return response()->json(['message' => 'Password updated successfully']);
     }
 
-    public function forgotPassword(Request $request)
-{
-    $request->validate(['email' => 'required|email']);
+    // public function forgotPassword(Request $request)
+    // {
+    //     $request->validate(['email' => 'required|email']);
 
-    $status = Password::sendResetLink($request->only('email'));
+    //     $status = Password::sendResetLink($request->only('email'));
 
-    if ($status === Password::RESET_LINK_SENT) {
-        return response()->json(['message' => __($status)]);
-    }
+    //     if ($status === Password::RESET_LINK_SENT) {
+    //         return response()->json(['message' => __($status)]);
+    //     }
 
-    throw ValidationException::withMessages([
-        'email' => [__($status)],
-    ]);
-}
+    //     throw ValidationException::withMessages([
+    //         'email' => [__($status)],
+    //     ]);
+    // }
+		
+		public function forgotPassword(Request $request)
+		{
+				$request->validate(['email' => 'required|email']);
 
-public function resetPassword(Request $request)
-{
-    $request->validate([
-        'token' => 'required',
-        'email' => 'required|email',
-        'password' => 'required|min:8|confirmed',
-    ]);
+				Password::sendResetLink($request->only('email'));
 
-    $status = Password::reset(
-        $request->only('email', 'password', 'password_confirmation', 'token'),
-        function ($user, $password) {
-            $user->forceFill(['password' => Hash::make($password)])->save();
-        }
-    );
+				return response()->json([
+						'message' => "If an account exists for that email, we've sent a password reset link.",
+				]);
+		}
 
-    if ($status === Password::PASSWORD_RESET) {
-        return response()->json(['message' => __($status)]);
-    }
+		public function resetPassword(Request $request)
+		{
+				$request->validate([
+						'token' => 'required',
+						'email' => 'required|email',
+						'password' => 'required|min:8|confirmed',
+				]);
 
-    throw ValidationException::withMessages([
-        'email' => [__($status)],
-    ]);
-}
+				$status = Password::reset(
+						$request->only('email', 'password', 'password_confirmation', 'token'),
+						function ($user, $password) {
+								$user->forceFill(['password' => Hash::make($password)])->save();
+						}
+				);
+
+				if ($status === Password::PASSWORD_RESET) {
+						return response()->json(['message' => __($status)]);
+				}
+
+				throw ValidationException::withMessages([
+						'email' => [__($status)],
+				]);
+		}
 }
