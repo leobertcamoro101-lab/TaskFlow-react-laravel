@@ -30,11 +30,12 @@ class AuthController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $tokenResult = $user->createToken('auth-token');
 
         return response()->json([
             'user' => $user,
-            'token' => $token,
+            'token' => $tokenResult->plainTextToken,
+            'expires_at' => $this->tokenExpiresAt($tokenResult->accessToken),
         ], 201);
     }
 
@@ -52,12 +53,30 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $tokenResult = $user->createToken('auth-token');
 
         return response()->json([
             'user' => $user,
-            'token' => $token,
+            'token' => $tokenResult->plainTextToken,
+            'expires_at' => $this->tokenExpiresAt($tokenResult->accessToken),
         ]);
+    }
+
+    /**
+     * The ISO-8601 timestamp this token stops working, based on the
+     * sanctum.expiration config (minutes from creation). Null when Sanctum
+     * is configured not to expire tokens. Lets the frontend proactively log
+     * the user out at the right moment instead of waiting for a 401.
+     */
+    private function tokenExpiresAt($accessToken): ?string
+    {
+        $minutes = config('sanctum.expiration');
+
+        if (! $minutes) {
+            return null;
+        }
+
+        return $accessToken->created_at->copy()->addMinutes($minutes)->toISOString();
     }
 
     public function logout(Request $request)

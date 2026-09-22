@@ -12,9 +12,10 @@ import type { User, RegisterPayload, LoginPayload, ProfilePayload, PasswordPaylo
 interface AuthState {
   user: User | null;
   token: string | null;
+  expiresAt: string | null;
   isAuthenticated: boolean;
-  login: (credentials: LoginPayload) => Promise<{ user: User; token: string }>;
-  register: (credentials: RegisterPayload) => Promise<{ user: User; token: string }>;
+  login: (credentials: LoginPayload) => Promise<{ user: User; token: string; expires_at: string | null }>;
+  register: (credentials: RegisterPayload) => Promise<{ user: User; token: string; expires_at: string | null }>;
   logout: () => Promise<void>;
   updateProfile: (data: ProfilePayload) => Promise<User>;
   updatePassword: (data: PasswordPayload) => Promise<{ message: string }>;
@@ -25,26 +26,27 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       token: null,
+      expiresAt: null,
       isAuthenticated: false,
 
       login: async (credentials) => {
         const { data } = await apiLogin(credentials);
         localStorage.setItem('token', data.token);
-        set({ user: data.user, token: data.token, isAuthenticated: true });
+        set({ user: data.user, token: data.token, expiresAt: data.expires_at, isAuthenticated: true });
         return data;
       },
 
       register: async (credentials) => {
         const { data } = await apiRegister(credentials);
         localStorage.setItem('token', data.token);
-        set({ user: data.user, token: data.token, isAuthenticated: true });
+        set({ user: data.user, token: data.token, expiresAt: data.expires_at, isAuthenticated: true });
         return data;
       },
 
       logout: async () => {
         try { await apiLogout(); } catch { /* ignore */ }
         localStorage.removeItem('token');
-        set({ user: null, token: null, isAuthenticated: false });
+        set({ user: null, token: null, expiresAt: null, isAuthenticated: false });
       },
 
       updateProfile: async (data) => {
@@ -60,7 +62,12 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'auth-storage',
-      partialize: (state) => ({ user: state.user, token: state.token, isAuthenticated: state.isAuthenticated }),
+      partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+        expiresAt: state.expiresAt,
+        isAuthenticated: state.isAuthenticated,
+      }),
     }
   )
 );
