@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class UpdatePasswordRequest extends FormRequest
 {
@@ -24,20 +25,9 @@ class UpdatePasswordRequest extends FormRequest
             'password' => [
                 'required',
                 'string',
-                'min:8',
                 'confirmed',
-                'regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).+$/',
+                Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(),
             ],
-        ];
-    }
-
-    /**
-     * Get custom messages for validator errors.
-     */
-    public function messages(): array
-    {
-        return [
-            'password.regex' => 'Password must include an uppercase letter, a number, and a special character.',
         ];
     }
 }

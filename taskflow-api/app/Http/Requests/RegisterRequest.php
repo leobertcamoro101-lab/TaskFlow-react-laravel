@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends FormRequest
 {
@@ -28,8 +29,7 @@ class RegisterRequest extends FormRequest
             'password' => [
                 'required',
                 'string',
-                'min:8',
-                'regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).+$/',
+                Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(),
             ],
         ];
     }
@@ -41,7 +41,6 @@ class RegisterRequest extends FormRequest
     {
         return [
             'birthday.before' => 'You must be at least 13 years old to register.',
-            'password.regex' => 'Password must include an uppercase letter, a number, and a special character.',
         ];
     }
 }

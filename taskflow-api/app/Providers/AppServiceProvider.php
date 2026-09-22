@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         ResetPassword::createUrlUsing(function (object $notifiable, string $token) {
-            return env('FRONTEND_URL', 'http://localhost:5173')
+            return config('app.frontend_url')
                 . '/reset-password?token=' . $token
                 . '&email=' . urlencode($notifiable->email);
         });

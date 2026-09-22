@@ -56,6 +56,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Frontend URL
+    |--------------------------------------------------------------------------
+    |
+    | The root URL of the SPA this API serves (used e.g. to build the
+    | password-reset link). Read via config() rather than env() directly
+    | in application code, so it still resolves correctly once config is
+    | cached (php artisan config:cache) in production.
+    |
+    */
+
+    'frontend_url' => env('FRONTEND_URL', 'http://localhost:5173'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
