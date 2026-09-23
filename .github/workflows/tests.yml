@@ -162,7 +162,7 @@ jobs:
           path: e2e/playwright-report/
           retention-days: 14
 
-  deploy:
+  delpoy:
     name: Deploy to Vercel + Railway (Wait for CI)
     runs-on: ubuntu-latest
     needs: [frontend-tests, backend-tests]

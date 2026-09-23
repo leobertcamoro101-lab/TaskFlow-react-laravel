@@ -57,14 +57,14 @@ const ChangePasswordPage = () => {
           <h2 className="text-white font-bold text-xl mb-6">Change Password</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <FormField label="Current Password" error={errors.current_password}>
-              <input type="password" {...register('current_password')} className={inputClass(!!errors.current_password)} />
+              <input type="password" autoComplete="current-password" {...register('current_password')} className={inputClass(!!errors.current_password)} />
             </FormField>
             <FormField label="New Password" error={errors.password}
               hint="8+ characters, with an uppercase letter, a number, and a special character">
-              <input type="password" {...register('password')} className={inputClass(!!errors.password)} />
+              <input type="password" autoComplete="new-password" {...register('password')} className={inputClass(!!errors.password)} />
             </FormField>
             <FormField label="Confirm New Password" error={errors.password_confirmation}>
-              <input type="password" {...register('password_confirmation')} className={inputClass(!!errors.password_confirmation)} />
+              <input type="password" autoComplete="new-password" {...register('password_confirmation')} className={inputClass(!!errors.password_confirmation)} />
             </FormField>
 
             {errors.root && (

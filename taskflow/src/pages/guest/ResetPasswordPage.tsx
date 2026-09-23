@@ -73,10 +73,10 @@ const ResetPasswordPage = () => {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <FormField label="New Password" error={errors.password}
                   hint="8+ characters, with an uppercase letter, a number, and a special character">
-                  <input type="password" {...register('password')} className={inputClass(!!errors.password)} />
+                  <input type="password" autoComplete="new-password" {...register('password')} className={inputClass(!!errors.password)} />
                 </FormField>
                 <FormField label="Confirm New Password" error={errors.password_confirmation}>
-                  <input type="password" {...register('password_confirmation')} className={inputClass(!!errors.password_confirmation)} />
+                  <input type="password" autoComplete="new-password" {...register('password_confirmation')} className={inputClass(!!errors.password_confirmation)} />
                 </FormField>
                 {errors.root && (
                   <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-4 py-3 text-sm">

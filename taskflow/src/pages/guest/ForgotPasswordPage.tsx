@@ -63,6 +63,7 @@ const ForgotPasswordPage = () => {
                   <input
                     type="email"
                     placeholder="your@email.com"
+                    autoComplete="email"
                     {...register('email')}
                     className={inputClass(!!errors.email)}
                   />

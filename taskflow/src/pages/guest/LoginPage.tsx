@@ -54,6 +54,7 @@ const LoginPage = () => {
               <input
                 type="email"
                 placeholder="your@email.com"
+                autoComplete="email"
                 {...register("email")}
                 className={inputClass(!!errors.email)}
               />
@@ -62,6 +63,7 @@ const LoginPage = () => {
               <input
                 type="password"
                 placeholder="••••••••"
+                autoComplete="current-password"
                 {...register("password")}
                 className={inputClass(!!errors.password)}
               />

@@ -76,16 +76,16 @@ const RegisterPage = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField label="First Name" error={errors.firstName}>
-                <input type="text" placeholder="John" {...register('firstName')} className={inputClass(!!errors.firstName)} />
+                <input type="text" placeholder="John" autoComplete="given-name" {...register('firstName')} className={inputClass(!!errors.firstName)} />
               </FormField>
               <FormField label="Last Name" error={errors.lastName}>
-                <input type="text" placeholder="Doe" {...register('lastName')} className={inputClass(!!errors.lastName)} />
+                <input type="text" placeholder="Doe" autoComplete="family-name" {...register('lastName')} className={inputClass(!!errors.lastName)} />
               </FormField>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField label="Birthday" error={errors.birthday}>
-                <input type="date" {...register('birthday')} className={inputClass(!!errors.birthday)} />
+                <input type="date" autoComplete="bday" {...register('birthday')} className={inputClass(!!errors.birthday)} />
               </FormField>
               <FormField label="Gender" error={errors.gender}>
                 <select {...register('gender')} defaultValue="" className={inputClass(!!errors.gender)}>
@@ -99,7 +99,7 @@ const RegisterPage = () => {
             </div>
 
             <FormField label="Email" error={errors.email}>
-              <input type="email" placeholder="john@example.com" {...register('email')} className={inputClass(!!errors.email)} />
+              <input type="email" placeholder="john@example.com" autoComplete="email" {...register('email')} className={inputClass(!!errors.email)} />
             </FormField>
 
             <FormField
@@ -107,7 +107,7 @@ const RegisterPage = () => {
               error={errors.password}
               hint="8+ characters, with an uppercase letter, a number, and a special character"
             >
-              <input type="password" placeholder="••••••••" {...register('password')} className={inputClass(!!errors.password)} />
+              <input type="password" placeholder="••••••••" autoComplete="new-password" {...register('password')} className={inputClass(!!errors.password)} />
             </FormField>
             {errors.root && (
               <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-4 py-3 text-sm">

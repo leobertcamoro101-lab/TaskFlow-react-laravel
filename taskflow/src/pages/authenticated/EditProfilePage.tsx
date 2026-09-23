@@ -91,15 +91,15 @@ const EditProfilePage = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField label="First Name" error={errors.firstName}>
-                <input type="text" {...register('firstName')} className={inputClass(!!errors.firstName)} />
+                <input type="text" autoComplete="given-name" {...register('firstName')} className={inputClass(!!errors.firstName)} />
               </FormField>
               <FormField label="Last Name" error={errors.lastName}>
-                <input type="text" {...register('lastName')} className={inputClass(!!errors.lastName)} />
+                <input type="text" autoComplete="family-name" {...register('lastName')} className={inputClass(!!errors.lastName)} />
               </FormField>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField label="Birthday" error={errors.birthday}>
-                <input type="date" {...register('birthday')} className={inputClass(!!errors.birthday)} />
+                <input type="date" autoComplete="bday" {...register('birthday')} className={inputClass(!!errors.birthday)} />
               </FormField>
               <FormField label="Gender" error={errors.gender}>
                 <select {...register('gender')} className={inputClass(!!errors.gender)}>
@@ -112,7 +112,7 @@ const EditProfilePage = () => {
               </FormField>
             </div>
             <FormField label="Email" error={errors.email}>
-              <input type="email" {...register('email')} className={inputClass(!!errors.email)} />
+              <input type="email" autoComplete="email" {...register('email')} className={inputClass(!!errors.email)} />
             </FormField>
 
             {profileError && (
