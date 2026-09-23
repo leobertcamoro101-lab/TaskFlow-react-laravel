@@ -94,6 +94,15 @@ export const loginSchema = z.object({
   password: z.string().min(1, 'Password is required'),
 });
 
+export const taskSchema = z.object({
+  title: z.string().min(1, 'Title is required').max(255).transform((v) => v.trim()),
+  description: z.string().max(5000).optional(),
+  priority: z.enum(['low', 'medium', 'high']),
+  status: z.enum(['todo', 'in-progress', 'done']),
+  due_date: z.string().optional(),
+});
+
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type PasswordInput = z.infer<typeof passwordSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
+export type TaskFormValues = z.infer<typeof taskSchema>;

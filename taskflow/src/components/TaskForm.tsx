@@ -1,20 +1,16 @@
-import { useState, type FormEvent } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { createTask, updateTask } from '../api/client';
 import type { TaskInput } from '../api/client';
-import type { Task, TaskPriority, TaskStatus } from '../types';
+import type { Task } from '../types';
+import { taskSchema } from '../schemas';
+import type { TaskFormValues } from '../schemas';
 import LoadingSpinner from './LoadingSpinner';
+import FormField from './FormField';
 import { inputClass } from './FormField/inputClass';
 
-interface TaskFormState {
-  title: string;
-  description: string;
-  priority: TaskPriority;
-  status: TaskStatus;
-  due_date: string;
-}
-
-const buildInitialForm = (task?: Task): TaskFormState => ({
+const buildDefaultValues = (task?: Task): TaskFormValues => ({
   title: task?.title ?? '',
   description: task?.description ?? '',
   priority: task?.priority ?? 'medium',
@@ -29,9 +25,18 @@ interface TaskFormProps {
 
 const TaskForm = ({ task, onClose }: TaskFormProps) => {
   const isEditMode = !!task;
-  const [form, setForm] = useState<TaskFormState>(buildInitialForm(task));
-  const [error, setError] = useState('');
   const queryClient = useQueryClient();
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<TaskFormValues>({
+    resolver: zodResolver(taskSchema),
+    mode: 'onTouched',
+    defaultValues: buildDefaultValues(task),
+  });
 
   const createMutation = useMutation({
     mutationFn: createTask,
@@ -40,7 +45,7 @@ const TaskForm = ({ task, onClose }: TaskFormProps) => {
       onClose();
     },
     onError: (err: any) => {
-      setError(err.response?.data?.message || 'Failed to create task');
+      setError('root', { message: err.response?.data?.message || 'Failed to create task' });
     },
   });
 
@@ -51,17 +56,14 @@ const TaskForm = ({ task, onClose }: TaskFormProps) => {
       onClose();
     },
     onError: (err: any) => {
-      setError(err.response?.data?.message || 'Failed to update task');
+      setError('root', { message: err.response?.data?.message || 'Failed to update task' });
     },
   });
 
   const mutation = isEditMode ? updateMutation : createMutation;
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!form.title.trim()) return setError('Title is required');
-    setError('');
-    const payload = { ...form, due_date: form.due_date || null };
+  const onSubmit = (data: TaskFormValues) => {
+    const payload = { ...data, due_date: data.due_date || null };
     if (isEditMode) {
       updateMutation.mutate(payload);
     } else {
@@ -74,39 +76,29 @@ const TaskForm = ({ task, onClose }: TaskFormProps) => {
       {/* + add relative above, + add spinner below */}
       {mutation.isPending && <LoadingSpinner asOverlay />}
       <h2 className="text-white font-bold mb-4">{isEditMode ? '✏️ Edit Task' : '➕ New Task'}</h2>
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <div>
-          <label className="text-xs text-gray-400 mb-1 block">Title *</label>
-          <input name="title" type="text" placeholder="Task title..."
-            value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })}
-            className={inputClass()} />
-        </div>
-        <div>
-          <label className="text-xs text-gray-400 mb-1 block">Description</label>
-          <textarea name="description" placeholder="Optional description..." rows={2} maxLength={5000}
-            value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
-            className={`${inputClass()} resize-none`} />
-        </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        <FormField label="Title *" error={errors.title}>
+          <input type="text" placeholder="Task title..." {...register('title')} className={inputClass(!!errors.title)} />
+        </FormField>
+        <FormField label="Description" error={errors.description}>
+          <textarea placeholder="Optional description..." rows={2} maxLength={5000}
+            {...register('description')} className={`${inputClass(!!errors.description)} resize-none`} />
+        </FormField>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label className="text-xs text-gray-400 mb-1 block">Priority</label>
-            <select value={form.priority} onChange={(e) => setForm({ ...form, priority: e.target.value as TaskPriority })}
-              className={inputClass()}>
+          <FormField label="Priority" error={errors.priority}>
+            <select {...register('priority')} className={inputClass(!!errors.priority)}>
               <option value="low">🟢 Low</option>
               <option value="medium">🟡 Medium</option>
               <option value="high">🔴 High</option>
             </select>
-          </div>
-          <div>
-            <label className="text-xs text-gray-400 mb-1 block">Due Date</label>
-            <input type="date" value={form.due_date}
-              onChange={(e) => setForm({ ...form, due_date: e.target.value })}
-              className={inputClass()} />
-          </div>
+          </FormField>
+          <FormField label="Due Date" error={errors.due_date}>
+            <input type="date" {...register('due_date')} className={inputClass(!!errors.due_date)} />
+          </FormField>
         </div>
-        {error && <p className="text-red-400 text-xs">{error}</p>}
+        {errors.root && <p className="text-red-400 text-xs">{errors.root.message}</p>}
         <div className="flex gap-2 pt-1">
-          <button type="submit" disabled={mutation.isPending}
+          <button type="submit" disabled={isSubmitting || mutation.isPending}
             className="flex-1 bg-violet-500 hover:bg-violet-400 disabled:opacity-50
                        text-white font-bold py-2.5 rounded-xl transition-colors text-sm">
             {mutation.isPending
