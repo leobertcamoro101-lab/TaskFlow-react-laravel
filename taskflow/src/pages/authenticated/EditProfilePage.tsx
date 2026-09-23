@@ -99,7 +99,9 @@ const EditProfilePage = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField label="Birthday" error={errors.birthday}>
-                <input type="date" autoComplete="bday" {...register('birthday')} className={inputClass(!!errors.birthday)} />
+                {/* See RegisterPage.tsx: Chrome flags autocomplete="bday" as
+                    non-standard when paired with type="date". */}
+                <input type="date" {...register('birthday')} className={inputClass(!!errors.birthday)} />
               </FormField>
               <FormField label="Gender" error={errors.gender}>
                 <select {...register('gender')} className={inputClass(!!errors.gender)}>

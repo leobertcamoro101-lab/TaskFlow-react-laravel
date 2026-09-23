@@ -85,7 +85,12 @@ const RegisterPage = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField label="Birthday" error={errors.birthday}>
-                <input type="date" autoComplete="bday" {...register('birthday')} className={inputClass(!!errors.birthday)} />
+                {/* Chrome's autofill validator rejects autocomplete="bday" paired
+                    with type="date" (flagged as a "non-standard autocomplete
+                    attribute value" DevTools issue) — there's no browser autofill
+                    behavior gained from it on a native date picker anyway, so it's
+                    left off rather than swapped for another mismatched token. */}
+                <input type="date" {...register('birthday')} className={inputClass(!!errors.birthday)} />
               </FormField>
               <FormField label="Gender" error={errors.gender}>
                 <select {...register('gender')} defaultValue="" className={inputClass(!!errors.gender)}>
