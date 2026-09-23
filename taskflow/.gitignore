@@ -24,3 +24,7 @@ hooks/useLoading.ts
 *.njsproj
 *.sln
 *.sw?
+
+"git": {
+    "deploymentEnabled": false
+  }

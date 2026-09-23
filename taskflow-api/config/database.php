@@ -38,8 +38,17 @@ return [
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-            'busy_timeout' => null,
-            'journal_mode' => null,
+            // SQLite's own defaults (busy_timeout 0, rollback-journal mode) fail
+            // a query immediately with "database is locked" the instant two
+            // connections touch the file at once, instead of one waiting for
+            // the other — fine with php artisan serve's default single
+            // worker, but a real problem once concurrent requests are
+            // possible (e.g. PHP_CLI_SERVER_WORKERS > 1 for the E2E suite).
+            // WAL lets readers and a writer coexist, and a busy_timeout makes
+            // an unavoidable writer-vs-writer clash wait and retry instead of
+            // erroring outright.
+            'busy_timeout' => 5000,
+            'journal_mode' => 'wal',
             'synchronous' => null,
             'transaction_mode' => 'DEFERRED',
         ],

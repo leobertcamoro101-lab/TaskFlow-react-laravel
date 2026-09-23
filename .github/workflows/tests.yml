@@ -1,0 +1,178 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend-tests:
+    name: Backend tests (Laravel)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: taskflow-api
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          # pdo_sqlite/sqlite3 are the ones this project has actually
+          # tripped on locally ("could not find driver") when a PHP install
+          # didn't ship them — pinned explicitly so CI can't hit the same
+          # gap. The rest are Laravel's usual baseline.
+          extensions: mbstring, pdo, pdo_sqlite, sqlite3, bcmath, curl, dom, fileinfo, tokenizer, xml
+          coverage: none
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('taskflow-api/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare environment
+        # No .env is committed (it's gitignored), and phpunit.xml's <php>
+        # block sets DB/cache/etc. for testing but not APP_KEY — generate
+        # one so anything touching encryption (signed URLs, cookies) has a
+        # key, same as a fresh local checkout would after `composer setup`.
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+
+      - name: Run tests
+        # phpunit.xml points DB_CONNECTION/DB_DATABASE at an in-memory
+        # SQLite database, so no external DB service is needed here —
+        # `composer test` (config:clear + artisan test) is the same command
+        # used locally.
+        run: composer test
+
+  frontend-tests:
+    name: Frontend tests (Vitest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: taskflow
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: taskflow/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        # NOT `npm test` — that script maps to `vitest` (watch mode), which
+        # never exits and would hang the job. `test:run` maps to
+        # `vitest run`, a single non-interactive pass.
+        run: npm run test:run
+
+  e2e-tests:
+    name: E2E tests (Playwright)
+    runs-on: ubuntu-latest
+    # Non-blocking while this suite is new and settling in: a flake here is
+    # surfaced (the job still runs and reports real pass/fail below) but
+    # never fails the whole workflow or the commit's checks. Once it's
+    # proven stable, drop `continue-on-error` to make it a real gate like
+    # the two jobs above.
+    continue-on-error: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, pdo, pdo_sqlite, sqlite3, bcmath, curl, dom, fileinfo, tokenizer, xml
+          coverage: none
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('taskflow-api/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: |
+            taskflow/package-lock.json
+            e2e/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: taskflow-api
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install frontend dependencies
+        working-directory: taskflow
+        run: npm ci
+
+      - name: Install e2e dependencies
+        working-directory: e2e
+        run: npm ci
+
+      - name: Verify Chrome is available
+        # playwright.config.ts runs with channel: "chrome" — the real
+        # Google Chrome, not Playwright's own downloaded Chromium — since
+        # GitHub's ubuntu-latest runners ship it preinstalled. This skips
+        # the Playwright browser download entirely. If a runner image ever
+        # stops shipping Chrome, this step fails fast with a clear message
+        # instead of the less obvious "channel not found" error Playwright
+        # itself would give.
+        run: |
+          if ! command -v google-chrome >/dev/null 2>&1; then
+            echo "::error::google-chrome not found on this runner. Either the runner image changed, or fall back to 'npx playwright install --with-deps chromium' in e2e/ and drop channel: \"chrome\" from playwright.config.ts."
+            exit 1
+          fi
+          google-chrome --version
+
+      - name: Run Playwright tests
+        working-directory: e2e
+        # playwright.config.ts starts the real Laravel server (a fresh
+        # scratch SQLite file, migrated by scripts/start-api.sh) and the
+        # real Vite dev client itself — nothing extra needs to be running
+        # here, and no external DB service is needed.
+        run: npm test
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: e2e/playwright-report/
+          retention-days: 14
+
+  delpoy:
+    name: Deploy to Vercel + Railway (Wait for CI)
+    runs-on: ubunto-latest
+    needs: [frontend-tests, backend-tests]
+    # Railway don't have deploy enable Wait for CI
+    # Only deploy on an actual push to main — never on pull requests, and
+    # never if either test job above failed (needs: already enforces this,
+    # but the explicit success() check makes the gating unmistakable).
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && success()
+
+    steps:
+      - name: Trigger Vercel deploy
+        run: curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"
+

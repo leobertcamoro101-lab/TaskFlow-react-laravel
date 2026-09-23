@@ -4,11 +4,12 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TaskController;
 use Illuminate\Support\Facades\Route;
 
-// Public auth routes (rate-limited: 6 attempts/minute per IP to prevent brute-force)
-Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:6,1');
-Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1');
-Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:6,1');
-Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:6,1');
+// Public auth routes (rate-limited: 6 attempts/minute per IP to prevent brute-force —
+// see the 'auth' limiter in AppServiceProvider for why this is env-configurable)
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:auth');
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:auth');
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:auth');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:auth');
 
 // Protected routes (rate-limited: 60 requests/minute per user, see AppServiceProvider)
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {

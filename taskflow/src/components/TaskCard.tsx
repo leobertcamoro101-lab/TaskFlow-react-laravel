@@ -73,7 +73,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
           <button
             onClick={() => setMenuOpen((open) => !open)}
             className="p-2 rounded-full hover:bg-gray-100 text-gray-600"
-            // aria-label="Task options"
+            aria-label="Task options"
           >
             <MoreHorizontal size={20} />
           </button>
