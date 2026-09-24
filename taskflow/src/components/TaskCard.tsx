@@ -129,6 +129,9 @@ const TaskCard = ({ task }: TaskCardProps) => {
           {task.priority}
         </span>
         <select
+          id={`task-status-${task.id}`}
+          name="status"
+          aria-label="Task status"
           value={task.status}
           onChange={handleStatusChange}
           disabled={updateMutation.isPending}
