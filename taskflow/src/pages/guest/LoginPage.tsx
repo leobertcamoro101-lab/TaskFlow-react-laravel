@@ -40,15 +40,15 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-[#FAF6EF]">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">TaskFlow</h1>
-          <p className="text-gray-400">Sign in to manage your tasks</p>
+          <h1 className="text-3xl font-bold text-[#2B2418] mb-2">TaskFlow</h1>
+          <p className="text-[#857A64]">Sign in to manage your tasks</p>
         </div>
 
         <Card>
-          <h2 className="text-white font-bold text-xl mb-6">Sign In</h2>
+          <h2 className="text-[#2B2418] font-bold text-xl mb-6">Sign In</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <FormField label="Email" error={errors.email}>
               <input
@@ -69,14 +69,14 @@ const LoginPage = () => {
               />
             </FormField>
             {errors.root && (
-              <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-4 py-3 text-sm">
+              <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-sm">
                 ⚠️ {errors.root.message}
               </div>
             )}
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-violet-500 hover:bg-violet-400 disabled:opacity-50
+              className="w-full bg-[#B8862E] hover:bg-[#9C7226] disabled:opacity-50
                          text-white font-bold py-3 rounded-xl transition-colors"
             >
               {isSubmitting ? "Signing in..." : "Sign In"}
@@ -85,16 +85,16 @@ const LoginPage = () => {
             <div className="text-center my-4">
               <Link
                 to="/forgot-password"
-                className="text-blue-600 text-sm hover:underline"
+                className="text-[#B8862E] text-sm hover:underline"
               >
                 Forgot password?
               </Link>
             </div>
-          <p className="text-center text-gray-500 text-sm mt-6">
+          <p className="text-center text-[#857A64] text-sm mt-6">
             No account?{" "}
             <Link
               to="/register"
-              className="text-violet-400 hover:text-violet-300 font-medium"
+              className="text-[#B8862E] hover:text-[#9C7226] font-medium"
             >
               Register
             </Link>

@@ -39,12 +39,12 @@ const ResetPasswordPage = () => {
 
   if (!token || !email) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4 bg-[#FAF6EF]">
         <div className="w-full max-w-md">
           <Card>
-            <p className="text-red-400 text-sm text-center">
+            <p className="text-red-600 text-sm text-center">
               ⚠️ Invalid or missing reset link.{' '}
-              <Link to="/forgot-password" className="text-violet-400 hover:text-violet-300 font-medium">
+              <Link to="/forgot-password" className="text-[#B8862E] hover:text-[#9C7226] font-medium">
                 Request a new one
               </Link>
             </p>
@@ -55,21 +55,21 @@ const ResetPasswordPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-[#FAF6EF]">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">TaskFlow</h1>
-          <p className="text-gray-400">Choose a new password</p>
+          <h1 className="text-3xl font-bold text-[#2B2418] mb-2">TaskFlow</h1>
+          <p className="text-[#857A64]">Choose a new password</p>
         </div>
 
         <Card>
           {success ? (
-            <p className="text-center text-emerald-400 text-sm">
+            <p className="text-center text-emerald-600 text-sm">
               ✅ Password reset! Redirecting to sign in...
             </p>
           ) : (
             <>
-              <h2 className="text-white font-bold text-xl mb-6">Reset Password</h2>
+              <h2 className="text-[#2B2418] font-bold text-xl mb-6">Reset Password</h2>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <FormField label="New Password" error={errors.password}
                   hint="8+ characters, with an uppercase letter, a number, and a special character">
@@ -79,14 +79,14 @@ const ResetPasswordPage = () => {
                   <input type="password" autoComplete="new-password" {...register('password_confirmation')} className={inputClass(!!errors.password_confirmation)} />
                 </FormField>
                 {errors.root && (
-                  <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-4 py-3 text-sm">
+                  <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-sm">
                     ⚠️ {errors.root.message}
                   </div>
                 )}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-violet-500 hover:bg-violet-400 disabled:opacity-50
+                  className="w-full bg-[#B8862E] hover:bg-[#9C7226] disabled:opacity-50
                              text-white font-bold py-3 rounded-xl transition-colors"
                 >
                   {isSubmitting ? 'Resetting...' : 'Reset Password'}

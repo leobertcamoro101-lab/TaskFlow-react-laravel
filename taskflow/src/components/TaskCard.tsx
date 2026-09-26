@@ -6,15 +6,15 @@ import type { Task, TaskStatus, TaskPriority } from '../types';
 import TaskForm from './TaskForm';
 
 const STATUS_COLORS: Record<TaskStatus, string> = {
-  'todo': 'bg-gray-500/10 text-gray-400 border-gray-500/20',
-  'in-progress': 'bg-violet-500/10 text-violet-400 border-violet-500/20',
-  'done': 'bg-green-500/10 text-green-400 border-green-500/20',
+  'todo': 'bg-[#F3EFE6] text-[#857A64] border-[#E9E0CF]',
+  'in-progress': 'bg-[#B8862E]/10 text-[#9C7226] border-[#B8862E]/20',
+  'done': 'bg-emerald-50 text-emerald-600 border-emerald-200',
 };
 
 const PRIORITY_COLORS: Record<TaskPriority, string> = {
-  low: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  medium: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
-  high: 'bg-red-500/10 text-red-400 border-red-500/20',
+  low: 'bg-blue-50 text-blue-600 border-blue-200',
+  medium: 'bg-amber-50 text-amber-700 border-amber-200',
+  high: 'bg-red-50 text-red-600 border-red-200',
 };
 
 const STATUS_ICONS: Record<TaskStatus, string> = { 'todo': '📋', 'in-progress': '⚡', 'done': '✅' };
@@ -58,13 +58,13 @@ const TaskCard = ({ task }: TaskCardProps) => {
 }
 
   return (
-    <div className={`bg-gray-800/50 border border-gray-700 rounded-2xl p-4 sm:p-5
-                     hover:border-gray-600 transition-all ${task.status === 'done' ? 'opacity-60' : ''}`}>
+    <div className={`bg-white border border-[#E9E0CF] rounded-2xl p-4 sm:p-5
+                     hover:border-[#D8CBA9] transition-all ${task.status === 'done' ? 'opacity-60' : ''}`}>
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-start gap-2 flex-1 min-w-0">
           <span className="text-lg mt-0.5">{STATUS_ICONS[task.status]}</span>
           <h3 className={`font-semibold text-sm sm:text-base leading-tight ${
-            task.status === 'done' ? 'line-through text-gray-500' : 'text-white'
+            task.status === 'done' ? 'line-through text-[#A89873]' : 'text-[#2B2418]'
           }`}>
             {task.title}
           </h3>
@@ -72,16 +72,16 @@ const TaskCard = ({ task }: TaskCardProps) => {
         <div className='relative' ref={menuRef}>
           <button
             onClick={() => setMenuOpen((open) => !open)}
-            className="p-2 rounded-full hover:bg-gray-100 text-gray-600"
+            className="p-2 rounded-full hover:bg-[#F0EAD9] text-[#857A64]"
             aria-label="Task options"
           >
             <MoreHorizontal size={20} />
           </button>
           {menuOpen && (
-            <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10">
+            <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-[#E9E0CF] py-1 z-10">
               <button
                 onClick={() => {setMenuOpen(false); setIsEditing(true)}}
-                className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 bg-transparent border-0 rounded-none m-0 justify-start"
+                className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#2B2418] hover:bg-[#F5F1E6] bg-transparent border-0 rounded-none m-0 justify-start"
                 aria-label="Edit task"
               >
                 <Pencil size={16} /> Edit
@@ -115,11 +115,11 @@ const TaskCard = ({ task }: TaskCardProps) => {
       </div>
 
       {task.description && (
-        <p className="text-gray-400 text-xs leading-relaxed mb-3 ml-7">{task.description}</p>
+        <p className="text-[#857A64] text-xs leading-relaxed mb-3 ml-7">{task.description}</p>
       )}
 
       {task.due_date && (
-        <p className="text-gray-500 text-xs mb-3 ml-7">
+        <p className="text-[#857A64] text-xs mb-3 ml-7">
           📅 Due: {new Date(task.due_date).toLocaleDateString()}
         </p>
       )}

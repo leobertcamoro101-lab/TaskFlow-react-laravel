@@ -11,7 +11,7 @@ function LoadingSpinner({ asOverlay }: LoadingSpinnerProps) {
           : ''
       }`}
     >
-      <div className="w-16 h-16 rounded-full border-[5px] border-blue-400 border-r-transparent border-l-transparent animate-spin" />
+      <div className="w-16 h-16 rounded-full border-[5px] border-[#B8862E] border-r-transparent border-l-transparent animate-spin" />
     </div>
   );
 }

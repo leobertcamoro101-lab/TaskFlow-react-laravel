@@ -34,28 +34,28 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-[#FAF6EF]">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">TaskFlow</h1>
-          <p className="text-gray-400">Reset your password</p>
+          <h1 className="text-3xl font-bold text-[#2B2418] mb-2">TaskFlow</h1>
+          <p className="text-[#857A64]">Reset your password</p>
         </div>
 
         <Card>
           {sent ? (
             <div className="text-center space-y-4">
-              <p className="text-white font-bold text-lg">Check your email 📬</p>
-              <p className="text-gray-400 text-sm">
+              <p className="text-[#2B2418] font-bold text-lg">Check your email 📬</p>
+              <p className="text-[#857A64] text-sm">
                 If an account exists for that email, we've sent a link to reset your password.
               </p>
-              <Link to="/login" className="text-violet-400 hover:text-violet-300 font-medium text-sm">
+              <Link to="/login" className="text-[#B8862E] hover:text-[#9C7226] font-medium text-sm">
                 Back to Sign In
               </Link>
             </div>
           ) : (
             <>
-              <h2 className="text-white font-bold text-xl mb-2">Forgot Password</h2>
-              <p className="text-gray-400 text-sm mb-6">
+              <h2 className="text-[#2B2418] font-bold text-xl mb-2">Forgot Password</h2>
+              <p className="text-[#857A64] text-sm mb-6">
                 Enter your email and we'll send you a link to reset your password.
               </p>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -69,21 +69,21 @@ const ForgotPasswordPage = () => {
                   />
                 </FormField>
                 {errors.root && (
-                  <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-4 py-3 text-sm">
+                  <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-sm">
                     ⚠️ {errors.root.message}
                   </div>
                 )}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-violet-500 hover:bg-violet-400 disabled:opacity-50
+                  className="w-full bg-[#B8862E] hover:bg-[#9C7226] disabled:opacity-50
                              text-white font-bold py-3 rounded-xl transition-colors"
                 >
                   {isSubmitting ? 'Sending...' : 'Send Reset Link'}
                 </button>
               </form>
-              <p className="text-center text-gray-500 text-sm mt-6">
-                <Link to="/login" className="text-violet-400 hover:text-violet-300 font-medium">
+              <p className="text-center text-[#857A64] text-sm mt-6">
+                <Link to="/login" className="text-[#B8862E] hover:text-[#9C7226] font-medium">
                   Back to Sign In
                 </Link>
               </p>

@@ -32,10 +32,10 @@ function Avatar({ className, style, image, name, alt, width }: AvatarProps) {
         style={style}
       >
         <div
-          className={`rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center ${sizeClasses}`}
+          className={`rounded-full bg-[#B8862E]/10 border border-[#B8862E]/30 flex items-center justify-center ${sizeClasses}`}
           style={sizeStyle}
         >
-          <span className={`font-bold text-violet-300 ${textClass}`}>{getInitials(name)}</span>
+          <span className={`font-bold text-[#9C7226] ${textClass}`}>{getInitials(name)}</span>
         </div>
       </div>
     );

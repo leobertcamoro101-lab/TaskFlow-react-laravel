@@ -72,10 +72,10 @@ const TaskForm = ({ task, onClose }: TaskFormProps) => {
   };
 
   return (
-    <div className=" relative bg-gray-800 border border-gray-700 rounded-2xl p-5 mb-6">
+    <div className=" relative bg-white border border-[#E9E0CF] rounded-2xl p-5 mb-6">
       {/* + add relative above, + add spinner below */}
       {mutation.isPending && <LoadingSpinner asOverlay />}
-      <h2 className="text-white font-bold mb-4">{isEditMode ? '✏️ Edit Task' : '➕ New Task'}</h2>
+      <h2 className="text-[#2B2418] font-bold mb-4">{isEditMode ? '✏️ Edit Task' : '➕ New Task'}</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
         <FormField label="Title *" error={errors.title}>
           <input type="text" placeholder="Task title..." {...register('title')} className={inputClass(!!errors.title)} />
@@ -96,17 +96,17 @@ const TaskForm = ({ task, onClose }: TaskFormProps) => {
             <input type="date" {...register('due_date')} className={inputClass(!!errors.due_date)} />
           </FormField>
         </div>
-        {errors.root && <p className="text-red-400 text-xs">{errors.root.message}</p>}
+        {errors.root && <p className="text-red-600 text-xs">{errors.root.message}</p>}
         <div className="flex gap-2 pt-1">
           <button type="submit" disabled={isSubmitting || mutation.isPending}
-            className="flex-1 bg-violet-500 hover:bg-violet-400 disabled:opacity-50
+            className="flex-1 bg-[#B8862E] hover:bg-[#9C7226] disabled:opacity-50
                        text-white font-bold py-2.5 rounded-xl transition-colors text-sm">
             {mutation.isPending
               ? (isEditMode ? 'Saving...' : 'Creating...')
               : (isEditMode ? 'Save Changes' : 'Create Task')}
           </button>
           <button type="button" onClick={onClose}
-            className="flex-1 bg-gray-700 hover:bg-gray-600 text-gray-300
+            className="flex-1 bg-[#F0EAD9] hover:bg-[#E9E0CF] text-[#6B5F4A]
                        font-bold py-2.5 rounded-xl transition-colors text-sm">
             Cancel
           </button>

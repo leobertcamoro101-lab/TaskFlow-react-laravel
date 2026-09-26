@@ -64,11 +64,11 @@ const EditProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-start justify-center px-4 py-12">
+    <div className="min-h-screen flex items-start justify-center px-4 py-12 bg-[#FAF6EF]">
       <div className="w-full max-w-md space-y-4">
         <Link
           to="/profile"
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm"
+          className="flex items-center gap-2 text-[#857A64] hover:text-[#2B2418] transition-colors text-sm"
         >
           <span aria-hidden="true">←</span> Back
         </Link>
@@ -80,11 +80,11 @@ const EditProfilePage = () => {
         {user && (
            <Card>
           {isSubmitting && <LoadingSpinner asOverlay />}
-          <h2 className="text-white font-bold text-xl mb-6">Edit Profile</h2>
+          <h2 className="text-[#2B2418] font-bold text-xl mb-6">Edit Profile</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="flex flex-col items-center gap-3 mb-2">
               <Avatar image={avatarPreview || user?.avatar_url} name={user?.name} alt={user?.name} />
-              <label className="cursor-pointer text-violet-400 hover:text-violet-300 text-sm font-medium">
+              <label className="cursor-pointer text-[#B8862E] hover:text-[#9C7226] text-sm font-medium">
                 Upload Photo
                 <input type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
               </label>
@@ -118,7 +118,7 @@ const EditProfilePage = () => {
             </FormField>
 
             {profileError && (
-              <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-4 py-3 text-sm">
+              <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-sm">
                 ⚠️ {profileError}
               </div>
             )}
@@ -126,12 +126,12 @@ const EditProfilePage = () => {
             <div className="flex gap-3">
               <Link
                 to="/profile"
-                className="flex-1 flex items-center justify-center bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-xl transition-colors"
+                className="flex-1 flex items-center justify-center bg-[#F0EAD9] hover:bg-[#E9E0CF] text-[#2B2418] font-bold py-3 rounded-xl transition-colors"
               >
                 Cancel
               </Link>
               <button type="submit" disabled={isSubmitting}
-                className="flex-1 bg-violet-500 hover:bg-violet-400 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-colors">
+                className="flex-1 bg-[#B8862E] hover:bg-[#9C7226] disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-colors">
                 {isSubmitting ? 'Saving...' : 'Save Changes'}
               </button>
             </div>

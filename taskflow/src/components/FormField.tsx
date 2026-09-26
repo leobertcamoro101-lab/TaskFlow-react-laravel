@@ -22,10 +22,10 @@ const FormField = ({ label, error, hint, children }: FormFieldProps) => {
 
   return (
     <div>
-      <label htmlFor={fieldId} className="text-xs text-gray-400 mb-1 block font-medium">{label}</label>
+      <label htmlFor={fieldId} className="text-xs text-[#857A64] mb-1 block font-medium">{label}</label>
       {field}
-      {hint && !error && <p className="text-gray-600 text-xs mt-1">{hint}</p>}
-      {error && <p className="text-red-400 text-xs mt-1">⚠️ {error.message}</p>}
+      {hint && !error && <p className="text-[#A89873] text-xs mt-1">{hint}</p>}
+      {error && <p className="text-red-600 text-xs mt-1">⚠️ {error.message}</p>}
     </div>
   );
 };

@@ -64,15 +64,15 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 bg-[#FAF6EF]">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">TaskFlow</h1>
-          <p className="text-gray-400">Create your account</p>
+          <h1 className="text-3xl font-bold text-[#2B2418] mb-2">TaskFlow</h1>
+          <p className="text-[#857A64]">Create your account</p>
         </div>
 
         <Card>
-          <h2 className="text-white font-bold text-xl mb-6">Create Account</h2>
+          <h2 className="text-[#2B2418] font-bold text-xl mb-6">Create Account</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField label="First Name" error={errors.firstName}>
@@ -115,20 +115,20 @@ const RegisterPage = () => {
               <input type="password" placeholder="••••••••" autoComplete="new-password" {...register('password')} className={inputClass(!!errors.password)} />
             </FormField>
             {errors.root && (
-              <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-4 py-3 text-sm">
+              <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-sm">
                 ⚠️ {errors.root.message}
               </div>
             )}
             <button type="submit" disabled={isSubmitting}
-              className="w-full bg-violet-500 hover:bg-violet-400 disabled:opacity-50
+              className="w-full bg-[#B8862E] hover:bg-[#9C7226] disabled:opacity-50
                          text-white font-bold py-3 rounded-xl transition-colors">
               {isSubmitting ? 'Creating account...' : 'Submit'}
             </button>
           </form>
 
-          <p className="text-center text-gray-500 text-sm mt-6">
+          <p className="text-center text-[#857A64] text-sm mt-6">
             Already have an account?{' '}
-            <Link to="/login" className="text-violet-400 hover:text-violet-300 font-medium">
+            <Link to="/login" className="text-[#B8862E] hover:text-[#9C7226] font-medium">
               Login
             </Link>
           </p>

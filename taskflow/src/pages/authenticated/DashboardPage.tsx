@@ -29,28 +29,28 @@ const DashboardPage = () => {
 
   if (isLoading)
     return (
-      <div className="h-screen flex items-center justify-center bg-gray-950">
+      <div className="h-screen flex items-center justify-center bg-[#FAF6EF]">
         {" "}
         <LoadingSpinner />{" "}
       </div>
     );
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 bg-[#FAF6EF] min-h-screen">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#2B2418]">
             Good day, {user?.name}! 👋
           </h1>
-          <p className="text-gray-400 text-sm mt-1">
-            You have <span className="text-violet-400 font-medium">{stats.todo}</span> tasks to do
-            and <span className="text-violet-400 font-medium">{stats.inProgress}</span> in progress.
+          <p className="text-[#857A64] text-sm mt-1">
+            You have <span className="text-[#B8862E] font-medium">{stats.todo}</span> tasks to do
+            and <span className="text-[#B8862E] font-medium">{stats.inProgress}</span> in progress.
           </p>
         </div>
         <button
           onClick={() => setShowForm((p) => !p)}
-          className="bg-violet-500 hover:bg-violet-400 text-white font-bold
+          className="bg-[#B8862E] hover:bg-[#9C7226] text-white font-bold
                      px-5 py-2.5 rounded-xl transition-colors text-sm shrink-0"
         >
           {showForm ? '✕ Cancel' : '➕ New Task'}
@@ -60,14 +60,14 @@ const DashboardPage = () => {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         {[
-          { label: 'Total', value: stats.total, color: 'text-white' },
-          { label: 'To Do', value: stats.todo, color: 'text-gray-400' },
-          { label: 'In Progress', value: stats.inProgress, color: 'text-violet-400' },
-          { label: 'Done', value: stats.done, color: 'text-green-400' },
+          { label: 'Total', value: stats.total, color: 'text-[#2B2418]' },
+          { label: 'To Do', value: stats.todo, color: 'text-[#857A64]' },
+          { label: 'In Progress', value: stats.inProgress, color: 'text-[#B8862E]' },
+          { label: 'Done', value: stats.done, color: 'text-emerald-600' },
         ].map(({ label, value, color }) => (
-          <div key={label} className="bg-gray-800 border border-gray-700 rounded-xl p-3 sm:p-4 text-center">
+          <div key={label} className="bg-white border border-[#E9E0CF] rounded-xl p-3 sm:p-4 text-center">
             <p className={`text-2xl font-bold ${color}`}>{value}</p>
-            <p className="text-gray-500 text-xs mt-1">{label}</p>
+            <p className="text-[#857A64] text-xs mt-1">{label}</p>
           </div>
         ))}
       </div>
@@ -83,8 +83,8 @@ const DashboardPage = () => {
             onClick={() => setFilter(f)}
             className={`px-4 py-1.5 rounded-xl text-xs font-medium border capitalize transition-colors ${
               filter === f
-                ? 'bg-violet-500 border-violet-500 text-white'
-                : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-violet-400'
+                ? 'bg-[#B8862E] border-[#B8862E] text-white'
+                : 'bg-white border-[#E9E0CF] text-[#857A64] hover:border-[#B8862E]'
             }`}
           >
             {f === 'all' ? 'All' : f === 'in-progress' ? 'In Progress' : f.charAt(0).toUpperCase() + f.slice(1)}
@@ -96,19 +96,19 @@ const DashboardPage = () => {
       {isLoading && (
         <div className="space-y-3 animate-pulse">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="bg-gray-800 rounded-2xl h-24" />
+            <div key={i} className="bg-[#F0EAD9] rounded-2xl h-24" />
           ))}
         </div>
       )}
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-2xl p-4 text-sm">
+        <div className="bg-red-50 border border-red-200 text-red-600 rounded-2xl p-4 text-sm">
           ⚠️ Failed to load tasks. Is the Laravel server running?
         </div>
       )}
 
       {!isLoading && tasks.length === 0 && (
-        <div className="text-center py-16 text-gray-500">
+        <div className="text-center py-16 text-[#857A64]">
           <p className="text-4xl mb-3">📭</p>
           <p>No tasks yet. Create your first one!</p>
         </div>
