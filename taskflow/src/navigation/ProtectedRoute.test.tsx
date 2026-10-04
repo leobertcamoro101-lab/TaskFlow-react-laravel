@@ -9,7 +9,7 @@ import { useAuthStore } from '../stores/authStore';
 // enforcement point, but a broken gate here would still be a bad UX/defense
 // -in-depth regression). Mock the store so each test controls auth state
 // directly instead of going through real login.
-vi.mock('../../stores/authStore', () => ({
+vi.mock('../stores/authStore', () => ({
   useAuthStore: vi.fn(),
 }));
 
