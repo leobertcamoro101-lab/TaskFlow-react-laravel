@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 
-import Avatar from '../Avatar';
+import Avatar from '../components/Avatar';
 import { ChevronDown, User, LogOut } from 'lucide-react';
-import { useAuthStore } from '../../stores/authStore';
+import { useAuthStore } from '../stores/authStore';
 
 function AccountMenu() {
 	const { user, isAuthenticated, logout } = useAuthStore();

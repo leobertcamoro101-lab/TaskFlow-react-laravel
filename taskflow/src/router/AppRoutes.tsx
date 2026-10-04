@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import ProtectedRoute from '../components/navigation/ProtectedRoute';
-import Navbar from '../components/navigation/Navbar';
-import RootLayout from './RootLayout';
+import ProtectedRoute from '../navigation/ProtectedRoute';
+import Navbar from '../navigation/Navbar';
+import RootLayout from '../navigation/RootLayout';
 import {
   LoginPage,
   RegisterPage,
