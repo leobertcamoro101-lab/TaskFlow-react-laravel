@@ -1,11 +1,9 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createTask, updateTask } from '../api/client';
-import type { TaskInput } from '../api/client';
 import type { Task } from '../types';
 import { taskSchema } from '../schemas';
 import type { TaskFormValues } from '../schemas';
+import { useTaskMutation } from '../hooks/useTaskMutation';
 import LoadingSpinner from './LoadingSpinner';
 import FormField from './FormField';
 import { inputClass } from './FormField/inputClass';
@@ -24,9 +22,6 @@ interface TaskFormProps {
 }
 
 const TaskForm = ({ task, onClose }: TaskFormProps) => {
-  const isEditMode = !!task;
-  const queryClient = useQueryClient();
-
   const {
     register,
     handleSubmit,
@@ -38,45 +33,14 @@ const TaskForm = ({ task, onClose }: TaskFormProps) => {
     defaultValues: buildDefaultValues(task),
   });
 
-  const createMutation = useMutation({
-    mutationFn: createTask,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      onClose();
-    },
-    onError: (err: any) => {
-      setError('root', { message: err.response?.data?.message || 'Failed to create task' });
-    },
-  });
-
-  const updateMutation = useMutation({
-    mutationFn: (data: Partial<TaskInput>) => updateTask(task!.id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      onClose();
-    },
-    onError: (err: any) => {
-      setError('root', { message: err.response?.data?.message || 'Failed to update task' });
-    },
-  });
-
-  const mutation = isEditMode ? updateMutation : createMutation;
-
-  const onSubmit = (data: TaskFormValues) => {
-    const payload = { ...data, due_date: data.due_date || null };
-    if (isEditMode) {
-      updateMutation.mutate(payload);
-    } else {
-      createMutation.mutate(payload);
-    }
-  };
+  const { mutation, submit, isEditMode } = useTaskMutation(task, onClose, setError);
 
   return (
     <div className=" relative bg-white border border-[#E9E0CF] rounded-2xl p-5 mb-6">
       {/* + add relative above, + add spinner below */}
       {mutation.isPending && <LoadingSpinner asOverlay />}
       <h2 className="text-[#2B2418] font-bold mb-4">{isEditMode ? '✏️ Edit Task' : '➕ New Task'}</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+      <form onSubmit={handleSubmit(submit)} className="space-y-3">
         <FormField label="Title *" error={errors.title}>
           <input type="text" placeholder="Task title..." {...register('title')} className={inputClass(!!errors.title)} />
         </FormField>

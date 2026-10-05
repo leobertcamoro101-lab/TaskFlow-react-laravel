@@ -1,8 +1,7 @@
 import  { useState, useEffect, useRef, type ChangeEvent } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateTask, deleteTask } from '../api/client';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import type { Task, TaskStatus, TaskPriority } from '../types';
+import { useTaskActions } from '../hooks/useTaskActions';
 import TaskForm from './TaskForm';
 
 const STATUS_COLORS: Record<TaskStatus, string> = {
@@ -24,7 +23,6 @@ interface TaskCardProps {
 }
 
 const TaskCard = ({ task }: TaskCardProps) => {
-  const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -39,18 +37,10 @@ const TaskCard = ({ task }: TaskCardProps) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: Partial<Task> }) => updateTask(id, data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tasks'] }),
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => deleteTask(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tasks'] }),
-  });
+  const { updateMutation, deleteMutation, changeStatus } = useTaskActions();
 
   const handleStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    updateMutation.mutate({ id: task.id, data: { status: e.target.value as TaskStatus } });
+    changeStatus(task.id, e.target.value as TaskStatus);
   };
 
   if (isEditing) {
