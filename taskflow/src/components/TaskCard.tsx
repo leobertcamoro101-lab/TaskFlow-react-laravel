@@ -2,6 +2,7 @@ import  { useState, useEffect, useRef, type ChangeEvent } from 'react';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import type { Task, TaskStatus, TaskPriority } from '../types';
 import { useTaskActions } from '../hooks/useTaskActions';
+import Card from './Card';
 import TaskForm from './TaskForm';
 
 const STATUS_COLORS: Record<TaskStatus, string> = {
@@ -48,8 +49,10 @@ const TaskCard = ({ task }: TaskCardProps) => {
 }
 
   return (
-    <div className={`bg-white border border-[#E9E0CF] rounded-2xl p-4 sm:p-5
-                     hover:border-[#D8CBA9] transition-all ${task.status === 'done' ? 'opacity-60' : ''}`}>
+    <Card
+      padding="sm"
+      className={`hover:border-[#D8CBA9] transition-all ${task.status === 'done' ? 'opacity-60' : ''}`}
+    >
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-start gap-2 flex-1 min-w-0">
           <span className="text-lg mt-0.5">{STATUS_ICONS[task.status]}</span>
@@ -86,22 +89,6 @@ const TaskCard = ({ task }: TaskCardProps) => {
             </div>
           )}
         </div>
-        {/* <div className="flex items-center gap-1 shrink-0">
-        <button
-          onClick={() => setIsEditing(true)}
-          className="text-gray-600 hover:text-violet-400 transition-colors text-sm"
-          aria-label="Edit task"
-        >
-          ✏️
-        </button>
-        <button
-          onClick={() => deleteMutation.mutate(task.id)}
-          disabled={deleteMutation.isPending}
-          className="text-gray-600 hover:text-red-400 transition-colors text-xl shrink-0"
-        >
-          ×
-        </button>
-        </div> */}
       </div>
 
       {task.description && (
@@ -133,7 +120,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
           <option value="done">✅ Done</option>
         </select>
       </div>
-    </div>
+    </Card>
   );
 };
 

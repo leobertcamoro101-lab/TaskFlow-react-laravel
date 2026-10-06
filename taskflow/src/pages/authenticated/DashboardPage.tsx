@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getTasks } from '../../api/client';
 import { useAuthStore } from '../../stores/authStore';
 import type { TaskStatus } from '../../types';
-import TaskCard from '../../components/TaskCard';
+import TaskList from '../../components/TaskList';
 import TaskForm from '../../components/TaskForm';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
@@ -14,7 +14,7 @@ const DashboardPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState<TaskStatus | 'all'>('all');
 
-  const { data: tasks = [], isLoading, error } = useQuery({
+  const { data: tasks = [], isLoading, isFetching, error } = useQuery({
     queryKey: ['tasks', filter],
     queryFn: () => getTasks(filter !== 'all' ? { status: filter } : {}).then((r) => r.data),
   });
@@ -93,33 +93,14 @@ const DashboardPage = () => {
       </div>
 
       {/* Task list */}
-      {isLoading && (
+      {isFetching ? (
         <div className="space-y-3 animate-pulse">
           {Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="bg-[#F0EAD9] rounded-2xl h-24" />
           ))}
         </div>
-      )}
-
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-600 rounded-2xl p-4 text-sm">
-          ⚠️ Failed to load tasks. Is the Laravel server running?
-        </div>
-      )}
-
-      {!isLoading && tasks.length === 0 && (
-        <div className="text-center py-16 text-[#857A64]">
-          <p className="text-4xl mb-3">📭</p>
-          <p>No tasks yet. Create your first one!</p>
-        </div>
-      )}
-
-      {!isLoading && tasks.length > 0 && (
-        <div className="space-y-3">
-          {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
-          ))}
-        </div>
+      ) : (
+        <TaskList tasks={tasks} error={error} />
       )}
     </div>
   );
