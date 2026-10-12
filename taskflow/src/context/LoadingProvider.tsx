@@ -1,4 +1,4 @@
-import { useCallback, useRef, type ReactNode, useEffect } from 'react';
+import { useCallback, useRef, type ReactNode, useEffect, useMemo } from 'react';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { LoadingContext } from './loading-context';
@@ -29,8 +29,10 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
     registerLoadingHandlers({ start: startLoading, stop: stopLoading });
   }, [startLoading, stopLoading]);
 
+  const value = useMemo(() => ({ startLoading, stopLoading }), [startLoading, stopLoading]);
+
   return (
-    <LoadingContext.Provider value={{ startLoading, stopLoading }}>
+    <LoadingContext.Provider value={value}>
       {children}
     </LoadingContext.Provider>
   );
