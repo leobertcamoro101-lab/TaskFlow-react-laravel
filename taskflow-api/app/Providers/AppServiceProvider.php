@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
