@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        //Enable lazy loading prevention
+        Model::preventLazyLoading(! $this->app->isProduction());
+        
         // Applied to every authenticated route via 'throttle:api' in routes/api.php.
         // Keyed by user id when authenticated so one user's traffic can't exhaust
         // another's quota, falling back to IP for unauthenticated requests.
