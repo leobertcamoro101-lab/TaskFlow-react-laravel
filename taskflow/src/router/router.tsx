@@ -13,6 +13,7 @@ import {
   ForgotPasswordPage,
   ResetPasswordPage,
 } from "./routes-config";
+import Navbar from "../navigation/Navbar";
 import RootLayout from "../navigation/RootLayout";
 import RouteError from "./RouteError";
 
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
         path: "/",
         element: (
           <ProtectedRoute>
+            <Navbar/>
             <DashboardPage />
           </ProtectedRoute>
         ),

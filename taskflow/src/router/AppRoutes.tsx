@@ -25,6 +25,7 @@ const router = createBrowserRouter([
         path: '/',
         element: (
           <ProtectedRoute>
+            <Navbar/>
             <DashboardPage />
           </ProtectedRoute>
         ),
