@@ -1,7 +1,8 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import ProtectedRoute from '../navigation/ProtectedRoute';
 import Navbar from '../navigation/Navbar';
 import RootLayout from '../navigation/RootLayout';
+import RouteError from './RouteError';
 import {
   LoginPage,
   RegisterPage,
@@ -16,6 +17,7 @@ import {
 const router = createBrowserRouter([
   {
     element: <RootLayout />,
+    errorElement: <RouteError />,
     children: [
       { path: '/login', element: <LoginPage /> },
       { path: '/register', element: <RegisterPage /> },
@@ -23,7 +25,6 @@ const router = createBrowserRouter([
         path: '/',
         element: (
           <ProtectedRoute>
-            <Navbar />
             <DashboardPage />
           </ProtectedRoute>
         ),
@@ -54,7 +55,6 @@ const router = createBrowserRouter([
       },
       { path: '/forgot-password', element: <ForgotPasswordPage /> },
       { path: '/reset-password', element: <ResetPasswordPage /> },
-      { path: '*', element: <Navigate to="/" replace /> },
     ],
   },
 ]);

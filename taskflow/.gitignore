@@ -31,3 +31,5 @@ src/router/AppRoutes.tsx
 "git": {
     "deploymentEnabled": false
   }
+# dead file
+AppRoutes.tsx
